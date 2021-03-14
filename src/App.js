@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { connect } from 'react-redux'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import * as CounterActions from './store/actions/Counter'
+import * as TextActions from './store/actions/Text'
+
+const App = ({ valueCounter, textValue, dispatch }) => {
+    return (
+        <div className="App">
+            <h1>Contador</h1>
+            <b>{valueCounter}</b><br/>
+            <button onClick={ () => dispatch(CounterActions.increment())} >Adicionar</button>
+            <button onClick={ () => dispatch(CounterActions.decrement())} >Incrementar</button>
+
+            <br/><br/><br/>
+            <b>{textValue}</b><br/>
+            <input placeholder="Texto" onChange={(e) => dispatch(TextActions.setNewValue(e.target.value))}></input>
+        </div>
+    );
 }
 
-export default App;
+const mapStateToProps = store =>({
+    valueCounter: store.counter.value,
+    textValue: store.text.value
+})
+
+export default connect(mapStateToProps)(App);
